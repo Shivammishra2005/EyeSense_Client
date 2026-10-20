@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EyeSense is an experimental AI eye-screening research project.">
+  <title>EyeSense | AI Eye Health</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="navbar">
+    <a href="#" class="brand">
+      <span class="brand-icon">E</span>
+      <span>EyeSense</span>
+    </a>
+    <nav>
+      <a href="#screening" class="nav-link">Screening</a>
+      <a href="#how-it-works" class="nav-link">How it works</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <span class="eyebrow">AI-POWERED RESEARCH PROTOTYPE</span>
+        <h1>See your eye health<br>from a new perspective.</h1>
+        <p>
+          Explore an experimental image-classification demo.
+          It is not a medical diagnosis or a substitute for an eye examination.
+        </p>
+        <a href="#screening" class="primary-link">Try the demo <span>→</span></a>
+      </div>
+
+      <div class="hero-visual" aria-label="Decorative animated eye scanning graphic">
+        <div class="eye-circle">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="scan-ring"></div>
+          <div class="eye-symbol">
+            <svg viewBox="0 0 120 80" role="img" aria-label="Eye illustration">
+              <path d="M8 40 Q60 -8 112 40 Q60 88 8 40Z"
+                    fill="none" stroke="currentColor" stroke-width="3"/>
+              <circle cx="60" cy="40" r="21" fill="none"
+                      stroke="currentColor" stroke-width="3"/>
+              <circle cx="60" cy="40" r="9" fill="currentColor"/>
+              <circle cx="64" cy="35" r="3" fill="#ffffff"/>
+            </svg>
+          </div>
+          <div class="scan-line"></div>
+        </div>
+        <span class="floating-tag tag-one">Image analysis</span>
+        <span class="floating-tag tag-two"><span class="live-dot"></span> Demo mode</span>
+      </div>
+    </section>
+
+    <section class="screening-section" id="screening">
+      <div class="section-heading">
+        <span class="eyebrow">TRY EYESENSE</span>
+        <h2>Experimental eye screening</h2>
+        <p>Upload an image to see the model's experimental output.</p>
+      </div>
+
+      <div class="screening-layout">
+        <article class="upload-card">
+          <div class="card-heading">
+            <span class="step-number">01</span>
+            <div>
+              <h3>Upload image</h3>
+              <p>Select an image to analyse.</p>
+            </div>
+          </div>
+
+          <input
+            type="file"
+            id="eyeImage"
+            accept="image/jpeg,image/png,image/webp"
+            hidden
+          >
+
+          <div class="upload-zone" id="uploadZone" tabindex="0" role="button"
+               aria-label="Choose an eye image or drag an image here">
+            <div id="uploadPlaceholder" class="upload-placeholder">
+              <div class="upload-icon">↑</div>
+              <h3>Drop your image here</h3>
+              <p>or click to browse your device</p>
+              <span class="file-types">JPG, PNG or WebP · Maximum 5 MB</span>
+            </div>
+
+            <div id="previewContainer" class="preview-container" hidden>
+              <img id="imagePreview" alt="Selected image preview">
+              <p id="fileName" class="file-name"></p>
+              <button type="button" id="removeImage" class="remove-image-btn">
+                ✕ Remove Image
+              </button>
+            </div>
+          </div>
+
+          <p id="uploadError" class="error-message" role="alert" hidden></p>
+
+          <div class="upload-actions">
+            <button type="button" id="analyzeButton" class="analyze-button" disabled>
+              Analyze Image <span>→</span>
+            </button>
+          </div>
+
+          <p class="privacy-note">
+            Upload only images you have permission to use. Avoid sharing identifiable personal information.
+          </p>
+        </article>
+
+        <article class="result-card" aria-live="polite">
+          <div class="card-heading">
+            <span class="step-number">02</span>
+            <div>
+              <h3>Screening result</h3>
+              <p>Your experimental model output appears here.</p>
+            </div>
+          </div>
+
+          <div id="emptyResult" class="empty-result">
+            <div class="empty-icon">◎</div>
+            <h3>Ready to analyse</h3>
+            <p>Upload an image and select Analyze Image to begin.</p>
+          </div>
+
+          <div id="resultContent" hidden>
+            <div class="result-top">
+              <span class="result-label">DISPLAY CATEGORY</span>
+              <h2 id="resultTitle">Waiting for result</h2>
+              <span id="resultStatus" class="status-pill">Experimental demo</span>
+            </div>
+
+            <div class="meter-section">
+              <div class="meter-heading">
+                <span>Adjusted display score</span>
+                <strong id="scoreValue">0.00%</strong>
+              </div>
+              <div
+                class="meter-track"
+                id="meterTrack"
+                role="progressbar"
+                aria-label="Adjusted demonstration score"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+              >
+                <div class="meter-fill" id="meterFill"></div>
+              </div>
+              <div class="meter-labels">
+                <span>0%</span>
+                <span>100%</span>
+              </div>
+              <p class="score-note">
+                Demonstration value only — not a medical probability.
+              </p>
+            </div>
+
+            <div class="situation-box">
+              <h3 id="careTitle">Situation</h3>
+              <p id="resultDescription"></p>
+            </div>
+
+            <div class="doctor-box">
+              <div class="doctor-icon">+</div>
+              <div>
+                <h3 id="doctorTitle">When to consult an eye doctor</h3>
+                <p id="careNote"></p>
+              </div>
+            </div>
+          </div>
+
+          <p class="disclaimer">
+            <strong>Important:</strong> This research prototype was trained on retinal fundus images
+            and is not validated for cataract detection from ordinary smartphone photos.
+            Do not use its output to diagnose or rule out an eye condition.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="how-section" id="how-it-works">
+      <div class="section-heading">
+        <span class="eyebrow">THE PROCESS</span>
+        <h2>How it works</h2>
+        <p>A simple demonstration of an image-classification workflow.</p>
+      </div>
+
+      <div class="steps-grid">
+        <article class="step-card">
+          <span class="step-number">01</span>
+          <h3>Upload an image</h3>
+          <p>Select a supported image from your device to preview it.</p>
+        </article>
+        <article class="step-card">
+          <span class="step-number">02</span>
+          <h3>Run the model</h3>
+          <p>The image is sent to the local experimental AI service.</p>
+        </article>
+        <article class="step-card">
+          <span class="step-number">03</span>
+          <h3>View the output</h3>
+          <p>Review the model's category and the clearly labelled demonstration score.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <a href="#" class="brand">
+      <span class="brand-icon">E</span>
+      <span>EyeSense</span>
+    </a>
+    <p>Experimental AI project · Not a medical diagnostic tool</p>
+  </footer>
+</body>
+</html>
